@@ -1,4 +1,5 @@
 mod day1;
+mod day2;
 use std::fs;
 
 use itertools::enumerate;
@@ -13,7 +14,9 @@ fn setup(day: usize) -> String {
 fn main() {
     // List of days to run as a tuple of the function and a boolean to evaluate it
     let days: Vec<(&dyn Fn(&String) -> (), bool)> = vec![
-        (&day1::fcn, true)];
+        (&day1::fcn, false),
+        (&day2::fcn, true),
+    ];
 
     // Iterate over the days and run the function if the boolean is true
     for (idx, (f, show)) in enumerate(&days) {
