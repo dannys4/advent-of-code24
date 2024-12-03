@@ -1,6 +1,6 @@
-use core::num;
+use rayon::prelude::*;
 
-// Parse each line of input as a vector of integers
+/// Parse each line of input as a vector of integers
 fn parse_input(contents: &String) -> Vec<Vec<i32>> {
     // Initialize a vector to store the parsed input
     let mut result = Vec::new();
@@ -16,80 +16,77 @@ fn parse_input(contents: &String) -> Vec<Vec<i32>> {
     return result;
 }
 
-fn is_safe_undamped_inner(report: &Vec<i32>)->(bool, bool, bool){
+/// Check if a given report is safe, skipping the number at skip_idx
+fn is_safe(report: &Vec<i32>, skip_idx: usize)->bool{
     let mut increasing = true;
     let mut decreasing = true;
     let mut safe_change = true;
-    for i in 1..report.len() {
-        let diff = report[i] - report[i - 1];
+
+    // For each consecutive pair of numbers, check if the difference is between 1 and 3
+    // Also check if the sequence is increasing or decreasing
+    // Skipping the number at skip_idx
+    let loop_start = if skip_idx == 0 {2} else {1};
+    let mut prev_idx = if skip_idx == 0 {1} else {0};
+    for i in loop_start..report.len() {
+        if i == skip_idx { // Skip the number at skip_idx
+            continue
+        }
+        let diff = report[i] - report[prev_idx];
+
+        // Update the flags
         increasing &= diff > 0;
         decreasing &= diff < 0;
         safe_change &= diff.abs() <= 3;
+        prev_idx = i;
     }
-    return (increasing, decreasing, safe_change);
-}
-
-fn is_safe_undamped(report: &Vec<i32>)->bool{
-    let (increasing, decreasing, safe_change) = is_safe_undamped_inner(report);
     return safe_change && (increasing || decreasing);
 }
 
-fn is_safe_damped(report: &Vec<i32>)->bool{
-    let (increasing, decreasing, safe_change) = is_safe_undamped_inner(report);
-    if safe_change && (increasing || decreasing) {
-        return true;
-    }
-
-    // Go through each pair of numbers and check if it would be increasing except for one skipped number
-    let mut one_skipped_diff = false;
-    let mut last_idx_increasing = 0;
-    let mut last_idx_decreasing = 0;
-    let mut num_skipped_increasing = 0;
-    let mut num_skipped_decreasing = 0;
-    for i in 1..report.len() {
-        let diff = report[i] - report[i - 1];
-        if diff.abs() > 3 || diff == 0 {
-            if one_skipped_diff {
-                return false;
-            }
-            one_skipped_diff = true;
-            continue
-        }
-        if diff < 0 {
-            num_skipped_increasing += 1;
-            last_idx_increasing = i-1;
-        } else {
-            num_skipped_decreasing += 1;
-            last_idx_decreasing = i-1;
-        }
-    }
-    println!("num_skipped_increasing: {}, num_skipped_decreasing: {}", num_skipped_increasing, num_skipped_decreasing);
-    return num_skipped_increasing < 2 || num_skipped_decreasing < 2;
+/// Check if a given report is safe, skipping no numbers
+fn is_safe_undamped(report: &Vec<i32>) -> i32 {
+    return is_safe(report, usize::MAX) as i32;
 }
 
-fn count_safe(reports: &Vec<Vec<i32>>, use_damped: bool)->i32{
-    let is_safe_fcn = if use_damped {is_safe_damped} else {is_safe_undamped};
-    let mut safe = 0;
-    for report in reports {
-        let is_safe = is_safe_fcn(report);
-        println!("{:?} is safe: {}", report, is_safe);
-        safe += is_safe as i32;
+/// Check if a given report is safe if you skip any one number
+fn is_safe_damped(report: &Vec<i32>) -> i32{
+    for skip_idx in 0..report.len() {
+        if is_safe(report, skip_idx) {
+            return 1;
+        }
     }
+    return 0;
+}
+
+/// Count the number of safe reports
+fn count_safe(reports: &Vec<Vec<i32>>, use_damped: bool)->i32{
+    // Choose the appropriate function to check if a report is safe
+    let is_safe_fcn = if use_damped {is_safe_damped} else {is_safe_undamped};
+    // Count the number of safe reports using parallel iterators
+    let safe = reports
+        .par_iter() // Use parallel iterator
+        .fold(|| 0, // Initialize the accumulator
+            |acc, report| {
+                return acc + is_safe_fcn(report); // Map is_safe_fcn and accumulate
+            })
+        .sum::<i32>(); // Sum the results
     return safe;
 }
 
+/// Solve the puzzle for part 1
 fn part1(reports: &Vec<Vec<i32>>) -> i32 {
     return count_safe(reports, false);
 }
 
+/// Solve the puzzle for part 2
 fn part2(reports: &Vec<Vec<i32>>) -> i64 {
     return count_safe(reports, true) as i64;
 }
 
+/// Function to run the day's solutions
 pub fn fcn(contents: &String) {
     let reports = parse_input(contents);
-    // let p1_ans = part1(&reports);
-    // println!("Part 1: {}", p1_ans);
+    let p1_ans = part1(&reports);
+    println!("Part 1: {}", p1_ans);
     let p2_ans = part2(&reports);
     println!("Part 2: {}", p2_ans);
 }
