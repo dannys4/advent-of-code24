@@ -109,19 +109,19 @@ struct XTile {
     z: char
 }
 
-fn print_rows(row0: &[char], row1: &[char], row2: &[char]) {
-    println!("{:?}", row0);
-    println!("{:?}", row1);
-    println!("{:?}", row2);
-    println!();
-}
+// fn print_rows(row0: &[char], row1: &[char], row2: &[char]) {
+//     println!("{:?}", row0);
+//     println!("{:?}", row1);
+//     println!("{:?}", row2);
+//     println!();
+// }
 
-fn print_xtile(tile: &XTile) {
-    println!("{}.{}", tile.x.0, tile.y.0);
-    println!(".{}.", tile.z);
-    println!("{}.{}", tile.y.1, tile.x.1);
-    println!();
-}
+// fn print_xtile(tile: &XTile) {
+//     println!("{}.{}", tile.x.0, tile.y.0);
+//     println!(".{}.", tile.z);
+//     println!("{}.{}", tile.y.1, tile.x.1);
+//     println!();
+// }
 
 impl XTile {
     fn new(row0: &[char], row1: &[char], row2: &[char]) -> XTile {
