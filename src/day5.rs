@@ -50,6 +50,7 @@ fn check_valid_list(first_section: &HashMap<i32, Vec<i32>>, list: &[i32]) -> boo
 }
 
 // Modify list inplace to make it valid
+#[allow(dead_code)]
 fn make_valid_list(first_section: &HashMap<i32, Vec<i32>>, list: &[i32]) {
     // Recursively make a valid list
     if list.len() < 1 {
@@ -65,10 +66,10 @@ fn make_valid_list(first_section: &HashMap<i32, Vec<i32>>, list: &[i32]) {
         for y in y_list {
             if let Some(index) = list.iter().position(|&num| num == *y) {
                 // Move all the other numbers up one index
-                for i in index..list.len()-1 {
-                    list[i+1] = list[i];
+                for _i in index..list.len()-1 {
+                    // list[i+1] = list[i];
                 }
-                list[index] = x;
+                // list[index] = x;
                 break;
             }
         }

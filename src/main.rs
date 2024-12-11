@@ -3,6 +3,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 use std::fs;
 
 use itertools::enumerate;
@@ -21,7 +22,8 @@ fn main() {
         (&day2::fcn, false),
         (&day3::fcn, false),
         (&day4::fcn, false),
-        (&day5::fcn, true),
+        (&day5::fcn, false),
+        (&day6::fcn, true),
     ];
 
     // Iterate over the days and run the function if the boolean is true
