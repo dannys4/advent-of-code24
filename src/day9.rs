@@ -76,22 +76,6 @@ struct DLLNode {
     size: u8,
 }
 
-impl DLLNode {
-    fn new() -> DLLNode {
-        return DLLNode {
-            next_idx: usize::MAX,
-            prev_idx: usize::MAX,
-            id: u32::MAX,
-            size: u8::MAX,
-        };
-    }
-
-    fn is_tombstone(&self) -> bool {
-        return self.id == u32::MAX
-            && self.size == u8::MAX;
-    }
-}
-
 // Use Vec<DLLNode> as doubly linked list
 struct DLL {
     data: Vec<DLLNode>,
