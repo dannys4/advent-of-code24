@@ -63,6 +63,7 @@ fn explore_tile_old(grid: &Vec<Vec<char>>, visited: &Vec<Vec<bool>>, c: char, po
     return east_p + west_p + north_p + south_p;
 }
 
+#[allow(dead_code)]
 fn find_first_stack(stacks: &HashMap<char, Vec<(usize, usize)>>) -> char {
     // Find first stack that has elements
     let mut which_stack = '.';
@@ -75,7 +76,7 @@ fn find_first_stack(stacks: &HashMap<char, Vec<(usize, usize)>>) -> char {
     return which_stack
 }
 
-
+#[allow(dead_code)]
 fn part1_old(grid: &Vec<Vec<char>>, unique_chars: &Vec<char>) -> usize {
     let mut visited: Vec<Vec<bool>> = grid.iter().map(|x| x.iter().map(|_| false).collect::<Vec<bool>>()).collect();
     let mut stacks: HashMap<char, Vec<(usize, usize)>> = HashMap::new();
