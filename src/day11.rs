@@ -1,6 +1,5 @@
 // use indicatif::ProgressBar;
 use std::collections::HashMap;
-use rayon::prelude::*;
 
 fn parse_contents(contents: &String) -> Vec<usize> {
     return contents.split(" ").map(|x| x.parse::<usize>().unwrap()).collect::<Vec<usize>>();
