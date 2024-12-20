@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Direction {
     North,
@@ -112,7 +110,7 @@ fn part1(pos: (usize,usize), grid: Vec<Vec<char>>, directions: Vec<Direction>) -
     for dir in directions {
         pos = attempt_step(&mut grid, pos, dir);
     }
-    // print_grid(&grid);
+    print_grid(&grid);
     let mut gps_sum = 0;
     for (i, row) in grid.iter().enumerate() {
         for (j, c) in row.iter().enumerate() {
@@ -212,7 +210,7 @@ fn part2(pos: (usize,usize), grid: Vec<Vec<char>>, directions: Vec<Direction>) -
     // Part 2: Move the robot through the grid
     let mut grid = grid;
     let mut pos = pos;
-    for (iter,dir) in directions.iter().enumerate() {
+    for (_iter,dir) in directions.iter().enumerate() {
         // println!("Iteration {}: Moving {:?}", iter, dir);
         // print_grid(&grid);
         let can_step = can_double_step(&grid, pos, *dir);
