@@ -1,5 +1,3 @@
-use std::cmp::min;
-
 const TURN_COST: usize = 1000;
 const STRAIGHT_COST: usize = 1;
 
