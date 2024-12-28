@@ -17,6 +17,8 @@ mod day16;
 mod day17;
 mod day18;
 mod day19;
+mod day20; // TODO: Implement day 20
+mod day21;
 use std::fs;
 
 use itertools::enumerate;
@@ -49,7 +51,9 @@ fn main() {
         (&day16::fcn, false),
         (&day17::fcn, false),
         (&day18::fcn, false),
-        (&day19::fcn, true),
+        (&day19::fcn, false),
+        (&day20::fcn, false), // Not yet implemented
+        (&day21::fcn, true),
     ];
 
     // Iterate over the days and run the function if the boolean is true

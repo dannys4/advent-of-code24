@@ -1,5 +1,5 @@
 // Progress bars
-use indicatif::{ProgressBar, ProgressStyle};
+use indicatif::ProgressBar;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
